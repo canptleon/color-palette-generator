@@ -1,0 +1,10 @@
+[
+  {
+    "source": "/",
+    "destination": "/index"
+  },
+  {
+    "source": "/palettes/:hex",
+    "destination": "/palettes?slug=hex"
+  }
+]
