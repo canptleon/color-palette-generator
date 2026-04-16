@@ -1,86 +1,48 @@
 import React from "react";
+import { GetServerSideProps } from "next";
 import { getNativeWebDevice } from "@/utils/formatting/render";
 import DesktopPalettesLayout from "@/layouts/PalettesLayouts/Desktop";
 import MobilePalettesLayout from "@/layouts/PalettesLayouts/Mobile";
 import Layout from "@/layouts/Layout";
 import HtmlHead from "@/components/HtmlHead";
-import { getPalettes } from "@/data/api/colors";
+import { generateAllPalettes } from "@/utils/paletteGenerator";
+import { isValidHex } from "@/utils/colorUtils";
 
 interface Props {
   isMobile: boolean;
-  hex: any;
-  palettes: any;
+  hex: string;
+  palettes: ReturnType<typeof generateAllPalettes>;
 }
 
-function Palettes(props: Props) {
-  const {
-    isMobile,
-    hex,
-    palettes
-  } = props;
-
+function Palettes({ isMobile, hex, palettes }: Props) {
   return (
     <>
-      <HtmlHead 
-        title="Color Palette Generator"
-      />
+      <HtmlHead title={`#${hex} — Color Palette Generator`} />
       <Layout isMobile={isMobile}>
         {isMobile ? (
-          <MobilePalettesLayout />
+          <MobilePalettesLayout hex={hex} palettes={palettes} />
         ) : (
-          <DesktopPalettesLayout 
-            hex={hex}
-            palettes={palettes}
-          />
+          <DesktopPalettesLayout hex={hex} palettes={palettes} />
         )}
       </Layout>
     </>
   );
 }
 
-export async function getServerSideProps(context: any) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const { hex } = context.query;
 
-  const isValidHex = typeof hex === 'string' && /^#[0-9A-Fa-f]{6}$/.test(`#${hex}`);
-  if (!isValidHex) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
+  if (typeof hex !== "string" || !isValidHex(`#${hex}`)) {
+    return { redirect: { destination: "/", permanent: false } };
   }
 
   const userAgent = context.req.headers["user-agent"] || "";
-  const deviceType = getNativeWebDevice(userAgent);
+  const isMobile = getNativeWebDevice(userAgent) === "Mobile";
 
-  const [triad, analogic, complement, analogicComplement, monochrome, monochromeDark, monochromeLight, quad] = await Promise.all([
-    getPalettes(hex, 'triad'),
-    getPalettes(hex, 'analogic'),
-    getPalettes(hex, 'complement'),
-    getPalettes(hex, 'analogic-complement'),
-    getPalettes(hex, 'monochrome'),
-    getPalettes(hex, 'monochrome-dark'),
-    getPalettes(hex, 'monochrome-light'),
-    getPalettes(hex, 'quad'),
-  ]);
+  // Generate all 24 palettes locally — no external API needed
+  const palettes = generateAllPalettes(`#${hex}`);
 
-  const props: Props = {
-    isMobile: deviceType === "Mobile",
-    hex,
-    palettes: {
-      triad: triad?.body,
-      analogic: analogic?.body,
-      complement: complement?.body,
-      analogicComplement: analogicComplement?.body,
-      monochrome: monochrome?.body,
-      monochromeDark: monochromeDark?.body,
-      monochromeLight: monochromeLight?.body,
-      quad: quad?.body,
-    },
-  };
-
-  return { props };
-}
+  return { props: { isMobile, hex, palettes } };
+};
 
 export default Palettes;

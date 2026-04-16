@@ -1,25 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  .mobile-body-area .no-scrollbar::-webkit-scrollbar,
-  .mobile-body-table-top .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .mobile-body-area .no-scrollbar,
-  .mobile-body-table-top .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+/* ─── CSS Custom Properties ─────────────────────────────────── */
+:root {
+  --bg-start:       #f5f3ff;
+  --bg-mid:         #faf5ff;
+  --bg-end:         #eff6ff;
+  --surface:        rgba(255,255,255,0.88);
+  --surface-border: rgba(255,255,255,0.55);
+  --text-primary:   #111827;
+  --text-secondary: #6b7280;
 }
 
+.dark {
+  --bg-start:       #0b0b14;
+  --bg-mid:         #111122;
+  --bg-end:         #0e101f;
+  --surface:        rgba(20,22,45,0.92);
+  --surface-border: rgba(255,255,255,0.06);
+  --text-primary:   #f1f5f9;
+  --text-secondary: #94a3b8;
+}
+
+/* ─── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
 body {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background: linear-gradient(140deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  position: relative;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth theme transitions */
+*, *::before, *::after {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
+}
+/* But NOT transforms/animations */
+[class*="animate-"],
+[class*="transition-"] {
+  transition-property: transform, opacity, box-shadow, background-color, border-color, color;
+}
+
+/* ─── Glass Surface ──────────────────────────────────────────── */
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(14px) saturate(1.5);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+}
+
+/* ─── Gradient Text ──────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 50%, #2563eb 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.dark .gradient-text {
+  background: linear-gradient(135deg, #a78bfa 0%, #818cf8 50%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ─── Shimmer skeleton ───────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.05) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+.dark .skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+}
+
+/* ─── Color card hover buttons ───────────────────────────────── */
+.color-swatch-btn {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.color-card:hover .color-swatch-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Custom scrollbar for main content */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.25); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(124,58,237,0.45); }
+
+/* ─── Focus rings ────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #7c3aed;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ─── Utilities ──────────────────────────────────────────────── */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
 }
