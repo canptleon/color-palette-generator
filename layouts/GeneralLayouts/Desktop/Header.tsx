@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import FavoritesPanel from "@/components/FavoritesPanel";
 import { useLang } from "@/contexts/LanguageContext";
 
 export default function DesktopHeader() {
@@ -21,7 +22,7 @@ export default function DesktopHeader() {
               </svg>
             </div>
             <span className="font-bold text-[17px] text-gray-900 dark:text-white tracking-tight">
-              Palette<span className="text-violet-600 dark:text-violet-400">Gen</span>
+              Color Palette<span className="text-violet-600 dark:text-violet-400"> Generator</span>
             </span>
           </Link>
 
@@ -33,6 +34,7 @@ export default function DesktopHeader() {
             >
               {t.generator}
             </Link>
+            <FavoritesPanel />
             <LanguageSwitcher />
             <ThemeToggle />
           </div>

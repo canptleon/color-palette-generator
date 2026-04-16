@@ -38,6 +38,11 @@ export interface Translations {
   unlockColor: string;
   noPalettes: string;
   noPalettesDesc: string;
+  favorites: string;
+  noFavorites: string;
+  noFavoritesDesc: string;
+  clearAll: string;
+  open: string;
   copiedHex: (hex: string) => string;
   copiedNColors: (n: number) => string;
   linkCopied: string;
@@ -52,7 +57,7 @@ export interface Translations {
 
 // ─── English ─────────────────────────────────────────────────────
 const en: Translations = {
-  appName:     "PaletteGen",
+  appName:     "Color Palette Generator",
   generator:   "Generator",
 
   badge:       "24 palette types · Instant generation",
@@ -90,6 +95,11 @@ const en: Translations = {
   unlockColor:     "Unlock color",
   noPalettes:      "No palettes available",
   noPalettesDesc:  "Please try a different color.",
+  favorites:       "Favorites",
+  noFavorites:     "No saved palettes yet",
+  noFavoritesDesc: "Click the heart button on any palette to save it here.",
+  clearAll:        "Clear all",
+  open:            "Open",
 
   copiedHex:       (hex) => `Copied ${hex}!`,
   copiedNColors:   (n)   => `Copied ${n} colors!`,
@@ -131,8 +141,8 @@ const en: Translations = {
 
 // ─── Turkish ─────────────────────────────────────────────────────
 const tr: Translations = {
-  appName:     "PaletteGen",
-  generator:   "Oluşturucu",
+  appName:     "Color Palette Generator",
+  generator:   "Renk Oluştur",
 
   badge:       "24 palet türü · Anında oluşturma",
   headline1:   "Güzel",
@@ -169,6 +179,11 @@ const tr: Translations = {
   unlockColor:     "Kilidi aç",
   noPalettes:      "Palet bulunamadı",
   noPalettesDesc:  "Lütfen farklı bir renk deneyin.",
+  favorites:       "Favoriler",
+  noFavorites:     "Henüz kaydedilmiş palet yok",
+  noFavoritesDesc: "Herhangi bir paleti buraya kaydetmek için kalp butonuna tıklayın.",
+  clearAll:        "Tümünü temizle",
+  open:            "Aç",
 
   copiedHex:       (hex) => `${hex} kopyalandı!`,
   copiedNColors:   (n)   => `${n} renk kopyalandı!`,

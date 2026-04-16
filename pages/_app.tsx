@@ -4,14 +4,17 @@ import "@/public/globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ToastProvider } from "@/contexts/ToastContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { FavoritesProvider } from "@/contexts/FavoritesContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <ToastProvider>
-          <Component {...pageProps} />
-        </ToastProvider>
+        <FavoritesProvider>
+          <ToastProvider>
+            <Component {...pageProps} />
+          </ToastProvider>
+        </FavoritesProvider>
       </LanguageProvider>
     </ThemeProvider>
   );

@@ -6,7 +6,8 @@ import { ColorData } from "@/components/ColorCard";
 import { generateRandomHex } from "@/utils/colorUtils";
 import { useToast } from "@/contexts/ToastContext";
 import { useLang } from "@/contexts/LanguageContext";
-import { PALETTE_MODES, PaletteMode } from "@/utils/paletteGenerator";
+import { useFavorites } from "@/contexts/FavoritesContext";
+import { PALETTE_MODES } from "@/utils/paletteGenerator";
 
 type PaletteMap = Record<string, { colors: ColorData[] }>;
 
@@ -15,23 +16,14 @@ interface Props {
   palettes: PaletteMap;
 }
 
-const FAVORITES_KEY = "palettegen_favorites";
-
-interface Favorite { hex: string; timestamp: number; }
-
 export default function DesktopPalettesLayout({ hex, palettes }: Props) {
   const { showToast } = useToast();
   const { t } = useLang();
   const router = useRouter();
+  const { addFavorite, removeFavorite, isFavorited: checkFav } = useFavorites();
 
   const [lockedColors, setLockedColors] = useState<Set<string>>(new Set());
-  const [isFavorited, setIsFavorited] = useState(() => {
-    if (typeof window === "undefined") return false;
-    try {
-      const favs: Favorite[] = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
-      return favs.some((f) => f.hex === hex);
-    } catch { return false; }
-  });
+  const isFavorited = checkFav(hex);
 
   const baseHex = `#${hex}`;
 
@@ -67,14 +59,11 @@ export default function DesktopPalettesLayout({ hex, palettes }: Props) {
 
   const handleFavorite = () => {
     try {
-      const favs: Favorite[] = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
       if (isFavorited) {
-        localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs.filter((f) => f.hex !== hex)));
-        setIsFavorited(false);
+        removeFavorite(hex);
         showToast(t.removedFavorite);
       } else {
-        localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favs, { hex, timestamp: Date.now() }]));
-        setIsFavorited(true);
+        addFavorite(hex);
         showToast(t.savedFavorite);
       }
     } catch { showToast(t.failedFavorite, "error"); }

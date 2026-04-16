@@ -7,7 +7,7 @@ export default function DesktopFooter() {
       <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded-md bg-gradient-to-br from-violet-500 to-indigo-600" />
-          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">PaletteGen</span>
+          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Color Palette Generator</span>
         </div>
         <p className="text-sm text-gray-400 dark:text-gray-500 text-center">
           &copy; {new Date().getFullYear()}{" "}
