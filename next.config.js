@@ -12,12 +12,7 @@ module.exports = {
   async rewrites() {
     return [];
   },
-  optimizeFonts: false,
   trailingSlash: false,
-  onDemandEntries: {
-    maxInactiveAge: 86400000,
-    pagesBufferLength: 50,
-  },
   webpack(config) {
     config.plugins.push(new webpack.DefinePlugin(hostConfig));
     return config;

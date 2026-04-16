@@ -32,16 +32,24 @@ const PALETTE_ACCENT: Record<string, string> = {
   goldenRatio:              "text-amber-600 dark:text-amber-400",
 };
 
+/** Responsive grid columns based on number of colors */
+function gridCols(count: number): string {
+  if (count <= 2) return "grid-cols-2";
+  if (count === 3) return "grid-cols-3";
+  if (count === 4) return "grid-cols-2 sm:grid-cols-4";
+  if (count === 5) return "grid-cols-3 sm:grid-cols-5";
+  // 6+
+  return "grid-cols-3 sm:grid-cols-6";
+}
+
 interface Props {
   mode: string;
   colors: ColorData[];
   baseHex: string;
-  lockedColors: Set<string>;
-  onToggleLock: (hex: string) => void;
   sectionIndex?: number;
 }
 
-export default function PaletteSection({ mode, colors, baseHex, lockedColors, onToggleLock, sectionIndex = 0 }: Props) {
+export default function PaletteSection({ mode, colors, baseHex, sectionIndex = 0 }: Props) {
   const { showToast } = useToast();
   const { t } = useLang();
 
@@ -64,7 +72,7 @@ export default function PaletteSection({ mode, colors, baseHex, lockedColors, on
       style={{ animationDelay: `${sectionIndex * 60}ms`, animationFillMode: "both" }}
     >
       {/* Section header */}
-      <div className="flex items-start justify-between gap-4 mb-5">
+      <div className="flex items-start justify-between gap-4 mb-4">
         <div>
           <h2 className={`text-[17px] font-bold tracking-tight ${accent}`}>
             {meta.name}
@@ -83,14 +91,12 @@ export default function PaletteSection({ mode, colors, baseHex, lockedColors, on
         </button>
       </div>
 
-      {/* Color cards row — horizontal scroll */}
-      <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
+      {/* Color cards — responsive grid, always shows all colors */}
+      <div className={`grid gap-2 sm:gap-3 ${gridCols(colors.length)}`}>
         {colors.map((color, i) => (
           <ColorCard
             key={`${mode}-${i}-${color.hex.clean}`}
             color={color}
-            isLocked={lockedColors.has(color.hex.value)}
-            onToggleLock={() => onToggleLock(color.hex.value)}
             animationDelay={i * 55}
           />
         ))}

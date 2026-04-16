@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import PaletteSection from "@/components/PaletteSection";
@@ -22,18 +22,9 @@ export default function DesktopPalettesLayout({ hex, palettes }: Props) {
   const router = useRouter();
   const { addFavorite, removeFavorite, isFavorited: checkFav } = useFavorites();
 
-  const [lockedColors, setLockedColors] = useState<Set<string>>(new Set());
   const isFavorited = checkFav(hex);
 
   const baseHex = `#${hex}`;
-
-  const handleToggleLock = useCallback((colorHex: string) => {
-    setLockedColors((prev) => {
-      const next = new Set(prev);
-      next.has(colorHex) ? next.delete(colorHex) : next.add(colorHex);
-      return next;
-    });
-  }, []);
 
   const handleShare = async () => {
     try {
@@ -108,11 +99,6 @@ export default function DesktopPalettesLayout({ hex, palettes }: Props) {
             <span className="px-2.5 py-1 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-400 font-mono">
               {validModes.length} {t.paletteTypes}
             </span>
-            {lockedColors.size > 0 && (
-              <span className="px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 font-semibold animate-scale-in">
-                {lockedColors.size} {t.locked}
-              </span>
-            )}
           </div>
         </div>
 
@@ -150,8 +136,6 @@ export default function DesktopPalettesLayout({ hex, palettes }: Props) {
                 mode={mode}
                 colors={palettes[mode].colors}
                 baseHex={baseHex}
-                lockedColors={lockedColors}
-                onToggleLock={handleToggleLock}
                 sectionIndex={idx}
               />
             </div>

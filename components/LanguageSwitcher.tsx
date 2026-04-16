@@ -64,12 +64,12 @@ export default function LanguageSwitcher() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="flex items-center gap-2 h-10 px-3 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 transition-all duration-200 hover:scale-105"
+        className="flex items-center gap-1.5 sm:gap-2 h-9 sm:h-10 px-2 sm:px-3 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 transition-all duration-200 hover:scale-105"
       >
         <span className="flex-shrink-0 overflow-hidden rounded-sm" style={{ lineHeight: 0 }}>
           {current.flag}
         </span>
-        <span className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+        <span className="hidden sm:inline text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
           {current.code}
         </span>
         <svg

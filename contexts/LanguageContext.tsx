@@ -8,19 +8,18 @@ interface LanguageContextType {
 }
 
 const LanguageContext = createContext<LanguageContextType>({
-  lang: "en",
+  lang: "tr",
   setLang: () => {},
-  t: translations.en,
+  t: translations.tr,
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("en");
+  const [lang, setLangState] = useState<Lang>("tr");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("lang") as Lang | null;
-    const browserLang = navigator.language.startsWith("tr") ? "tr" : "en";
-    const resolved: Lang = stored === "tr" || stored === "en" ? stored : browserLang;
+    const resolved: Lang = stored === "tr" || stored === "en" ? stored : "tr";
     setLangState(resolved);
     setMounted(true);
   }, []);
